@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use \Config;
+use OpenTok\OpenTok;
 
 class OpentokLaravelServiceProvider extends ServiceProvider {
 
@@ -29,17 +30,13 @@ class OpentokLaravelServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-        $app = $this->app;
-        $app->bind('OpentokApi', function() {
+        $this->app->bind('OpentokApi', function() {
             
             $api_key    = Config::get('opentok-laravel::api_key');
             $api_secret = Config::get('opentok-laravel::api_secret');
         
             // create new instance of SDK
-            $openTokApi = new \OpenTokSDK($api_key, $api_secret);
-
-            // return pusher
-            return $openTokApi;
+            return new OpenTok($api_key, $api_secret);
         });
 	}
 
